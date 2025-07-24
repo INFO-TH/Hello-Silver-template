@@ -1,193 +1,1205 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>독거 노인을 위한 복지 점수 계산기</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      font-size: 18px;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-      background-color: #f2f2f2;
-    }
-    header {
-      background-color: #3e8ec6;
-      color: #fff;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header h1 { margin: 0; font-size: 28px; }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin-right: 20px;
-      font-size: 20px;
-    }
-    nav a:last-child { margin-right: 0; }
-    main {
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      border-radius: 8px;
-    }
-    h2 { color: #3e8ec6; }
-    fieldset {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 4px;
-    }
-    legend {
-      font-weight: bold;
-      font-size: 20px;
-    }
-    label { display: block; margin: 5px 0; }
-    button {
-      display: block;
-      width: 100%;
-      background-color: #3e8ec6;
-      color: #fff;
-      font-size: 20px;
-      border: none;
-      padding: 12px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 4px;
-      background-color: #eaf4fc;
-      border: 1px solid #3e8ec6;
-    }
-    ul { margin-top: 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Silver - 어르신 복지 지원 진단</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .site-header {
+            background-color: #13547a;
+            color: white;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+        
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .custom-btn {
+            background-color: #80d0c7;
+            border-color: #80d0c7;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+        }
+        
+        .custom-btn:hover {
+            background-color: #13547a;
+            border-color: #13547a;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .question-header {
+            background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .option-label {
+            display: block;
+            cursor: pointer;
+            padding: 15px 20px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .option-label:hover {
+            background: #e3f2fd;
+            border-color: #80d0c7;
+        }
+        
+        .option-label input:checked + span {
+            color: #13547a;
+            font-weight: 600;
+        }
+        
+        .option-label:has(input:checked) {
+            background: #e8f5e8;
+            border-color: #80d0c7;
+        }
+        
+        .results-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .welfare-item {
+            background: #f8f9fa;
+            border-left: 4px solid #80d0c7;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .priority-high { border-left-color: #dc3545; }
+        .priority-medium { border-left-color: #ffc107; }
+        .priority-low { border-left-color: #28a745; }
+        
+        .score-display {
+            background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Hello Silver</h1>
-    <nav>
-      <a href="#">홈</a>
-      <a href="#">복지 정보</a>
-      <a href="#calculator">점수 계산</a>
-      <a href="#">게임</a>
-      <a href="#">연락처</a>
+    <header class="site-header">
+        <div class="container">
+            <div class="row">                    
+                <div class="col-lg-8 col-12 d-flex flex-wrap">
+                    <p class="d-flex me-4 mb-0">
+                        <i class="bi-geo-alt me-2"></i>
+                        <strong>효성여자고등학교</strong>
+                    </p>
+                    <p class="d-flex mb-0">
+                        <i class="bi-envelope me-2"></i>
+                        <a href="mailto:team.ddasum.care@gmail.com" class="text-white text-decoration-none">
+                            team.ddasum.care@gmail.com
+                        </a>
+                    </p>
+                </div>
+                <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="#" class="text-white"><i class="bi-twitter"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="text-white"><i class="bi-facebook"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="text-white"><i class="bi-instagram"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="text-white"><i class="bi-youtube"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg bg-light shadow-lg">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="images/logo.png" alt="Hello Silver">
+                <span>
+                    Hello Silver
+                    <small class="d-block">효성여고 학생이 만드는 나눔</small>
+                </span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="purpose.html">설립목적</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#section_3">Causes</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="elder_calculator.html">노인복지점수계산기</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">News</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="news.html">건강 정보</a></li>
+                            <li><a class="dropdown-item" href="news-detail.html">지역별 서비스 안내</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#section_6">연락망</a></li>
+                    <li class="nav-item"><a class="nav-link" href="minigame.html">미니게임</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link custom-btn btn" href="donate.html">기부</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
-  </header>
 
-  <main id="calculator">
-    <h2>복지 점수 계산기</h2>
-    <p>각 질문을 읽고 자신에게 가장 잘 맞는 답을 선택하세요. 점수가 높을수록 도움이 더 필요한 상황을 의미합니다. 계산된 점수와 안내는 브라우저에 저장되어 다음에 방문했을 때도 볼 수 있습니다.</p>
-    <form id="surveyForm">
-      <!-- 질문 항목 1 -->
-      <fieldset>
-        <legend>1. 현재 건강 상태</legend>
-        <label><input type="radio" name="q1" value="0" required> 몸이 건강하고 걱정되는 질병이 없다</label>
-        <label><input type="radio" name="q1" value="1"> 혈압‧당뇨 등 간단한 질환이 있다</label>
-        <label><input type="radio" name="q1" value="2"> 병원 치료가 필요한 질환이 있다</label>
-      </fieldset>
-      <!-- 질문 항목 2 -->
-      <fieldset>
-        <legend>2. 일상생활에서 도움 필요 여부</legend>
-        <label><input type="radio" name="q2" value="0" required> 혼자서 잘 할 수 있다</label>
-        <label><input type="radio" name="q2" value="1"> 가끔 가족이나 이웃의 도움이 필요하다</label>
-        <label><input type="radio" name="q2" value="2"> 도움 없이는 어렵다</label>
-      </fieldset>
-      <!-- 질문 항목 3 -->
-      <fieldset>
-        <legend>3. 살고 있는 집 형태</legend>
-        <label><input type="radio" name="q3" value="0" required> 자가 집</label>
-        <label><input type="radio" name="q3" value="1"> 전세나 월세</label>
-        <label><input type="radio" name="q3" value="2"> 임대주택/무상 거주</label>
-      </fieldset>
-      <!-- 질문 항목 4 -->
-      <fieldset>
-        <legend>4. 혼자 살고 있는지 여부</legend>
-        <label><input type="radio" name="q4" value="0" required> 가족과 함께 산다</label>
-        <label><input type="radio" name="q4" value="1"> 배우자와 둘이 산다</label>
-        <label><input type="radio" name="q4" value="2"> 혼자 산다</label>
-      </fieldset>
-      <!-- 질문 항목 5 -->
-      <fieldset>
-        <legend>5. 경제 상태</legend>
-        <label><input type="radio" name="q5" value="0" required> 생활비에 여유가 있다</label>
-        <label><input type="radio" name="q5" value="1"> 생활비가 빠듯하다</label>
-        <label><input type="radio" name="q5" value="2"> 생활비가 매우 부족하다</label>
-      </fieldset>
-      <!-- 질문 항목 6 -->
-      <fieldset>
-        <legend>6. 외부 활동 빈도</legend>
-        <label><input type="radio" name="q6" value="0" required> 주 3회 이상 외출한다</label>
-        <label><input type="radio" name="q6" value="1"> 주 1~2회 외출한다</label>
-        <label><input type="radio" name="q6" value="2"> 거의 외출하지 않는다</label>
-      </fieldset>
-      <!-- 질문 항목 7 -->
-      <fieldset>
-        <legend>7. 사회적 관계</legend>
-        <label><input type="radio" name="q7" value="0" required> 친구나 이웃과 자주 만나고 전화한다</label>
-        <label><input type="radio" name="q7" value="1"> 가끔 연락한다</label>
-        <label><input type="radio" name="q7" value="2"> 거의 연락하지 않는다</label>
-      </fieldset>
-      <button type="button" onclick="calculateScore()">점수 계산하기</button>
-    </form>
-    <div id="result" class="result" style="display:none"></div>
-  </main>
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-primary mb-3">어르신 맞춤형 복지 진단</h1>
+            <p class="lead text-muted">상세한 질문을 통해 개인별 맞춤 복지 서비스를 추천해드립니다</p>
+            
+            <!-- 메인 버튼들 -->
+            <div class="d-flex justify-content-center gap-3 mb-4">
+                <button type="button" class="btn custom-btn btn-lg px-4" id="openCalculatorBtn">
+                    <i class="bi-calculator me-2"></i>복지점수 계산하기
+                </button>
+                <button type="button" class="btn btn-outline-primary btn-lg px-4" id="openHistoryBtn">
+                    <i class="bi-bookmark-check me-2"></i>저장한 복지점수 확인하기
+                </button>
+            </div>
+        </div>
 
-  <script>
-    // 기존 점수 로드
-    window.onload = function() {
-      const savedScore = localStorage.getItem('welfareScore');
-      const savedMessage = localStorage.getItem('welfareMessage');
-      if (savedScore && savedMessage) {
-        const result = document.getElementById('result');
-        result.style.display = 'block';
-        result.innerHTML = '<strong>저장된 점수: </strong>' + savedScore + '<br>' + savedMessage;
-      }
-    };
+        <form id="welfareForm" style="display: none;">
+            <!-- 기본 정보 -->
+            <div class="question-card">
+                <h3 class="question-header">📋 기본 정보</h3>
+                <div class="p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">연령대</label>
+                            <select name="age" class="form-select" required>
+                                <option value="">선택해주세요</option>
+                                <option value="65-69">65-69세</option>
+                                <option value="70-74">70-74세</option>
+                                <option value="75-79">75-79세</option>
+                                <option value="80+">80세 이상</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">거주지역</label>
+                            <select name="region" class="form-select" required>
+                                <option value="">선택해주세요</option>
+                                <option value="seoul">서울특별시</option>
+                                <option value="busan">부산광역시</option>
+                                <option value="daegu">대구광역시</option>
+                                <option value="incheon">인천광역시</option>
+                                <option value="gwangju">광주광역시</option>
+                                <option value="daejeon">대전광역시</option>
+                                <option value="ulsan">울산광역시</option>
+                                <option value="sejong">세종특별자치시</option>
+                                <option value="gyeonggi">경기도</option>
+                                <option value="other">기타 지역</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    function calculateScore() {
-      const form = document.getElementById('surveyForm');
-      const formData = new FormData(form);
-      let total = 0;
-      for (const value of formData.values()) {
-        total += parseInt(value);
-      }
-      let message = '';
-      if (total <= 4) {
-        message += '<h3>낮은 취약성</h3>';
-        message += '<p>전반적으로 건강과 생활이 안정적인 편입니다. 하지만 정기적으로 건강검진을 받고, 지역 복지관의 다양한 프로그램(취미 활동, 체육 교실 등)을 이용하여 활력을 유지하세요. 지하철과 버스 등 대중교통의 경로우대 무임 혜택을 챙기고, 에너지‧통신요금 감면 제도도 확인하세요.</p>';
-      } else if (total <= 8) {
-        message += '<h3>중간 취약성</h3>';
-        message += '<p>생활 여건을 개선하기 위해 다음과 같은 제도를 활용해 보세요.</p>';
-        message += '<ul>';
-        message += '<li><strong>기초연금</strong>: 만 65세 이상인 저소득 어르신을 대상으로, 단독가구 월 최저 약 34,250원에서 최대 342,510원, 부부가구는 최대 548,000원을 지급하며 선정기준 소득은 단독가구 월 228만 원, 부부가구 364만8천 원 이하입니다:contentReference[oaicite:3]{index=3}.</li>';
-        message += '<li><strong>건강지원</strong>: 보건소에서 실시하는 무료 건강검진, 치매 조기검진, 틀니‧임플란트 지원 사업을 활용해 질병을 예방하세요.</li>';
-        message += '<li><strong>주거지원</strong>: 주거 환경이 열악한 경우에는 지방자치단체의 집수리 지원 사업이나 에너지 바우처 제도를 문의해 보세요.</li>';
-        message += '<li><strong>교통·통신 요금 감면</strong>: 기초연금 수급자는 이동통신 요금 감면을 받을 수 있으며, 지역별로 대중교통 요금 할인 제도가 있습니다.</li>';
-        message += '</ul>';
-      } else {
-        message += '<h3>높은 취약성</h3>';
-        message += '<p>일상적인 지원이 필요합니다. 아래 제도들을 우선적으로 검토하세요.</p>';
-        message += '<ul>';
-        message += '<li><strong>노인맞춤돌봄서비스</strong>: 만 65세 이상 국민기초생활수급자, 차상위계층 또는 기초연금 수급자에게 돌봄‧생활지원 서비스를 제공하는 제도입니다:contentReference[oaicite:4]{index=4}.</li>';
-        message += '<li><strong>노인장기요양보험</strong>: 65세 이상 또는 치매‧뇌혈관성 질환 등으로 혼자서 일상생활을 수행하기 어려운 사람이 장기요양급여를 받을 수 있는 사회보험입니다:contentReference[oaicite:5]{index=5}.</li>';
-        message += '<li><strong>긴급복지 및 생활지원</strong>: 급작스러운 위기 상황에는 긴급복지지원 제도를 통해 생계‧의료‧주거‧요금 지원을 받을 수 있습니다.</li>';
-        message += '<li><strong>식사 및 돌봄 연계</strong>: 복지관이나 읍면동 행정복지센터를 통해 무료 급식, 반찬 배달, 안부 확인 서비스를 신청할 수 있습니다.</li>';
-        message += '</ul>';
-        message += '<p>주변의 가족, 이웃, 행정복지센터와 적극적으로 상담하여 필요한 도움을 받으시기 바랍니다.</p>';
-      }
-      const resultDiv = document.getElementById('result');
-      resultDiv.style.display = 'block';
-      resultDiv.innerHTML = '<strong>총점: </strong>' + total + '<br>' + message;
-      localStorage.setItem('welfareScore', total);
-      localStorage.setItem('welfareMessage', message);
-    }
-  </script>
+            <!-- 소득 및 경제 상황 -->
+            <div class="question-card">
+                <h3 class="question-header">💰 소득 및 경제 상황</h3>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">월 소득 수준</label>
+                        <label class="option-label">
+                            <input type="radio" name="income" value="basic" required>
+                            <span>월 30만원 미만 (기초생활수급 대상)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="income" value="low" required>
+                            <span>월 30-80만원 (차상위계층)</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="income" value="medium-low" required>
+                            <span>월 80-120만원</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="income" value="medium" required>
+                            <span>월 120-200만원</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="income" value="stable" required>
+                            <span>월 200만원 이상</span>
+                        </label>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">의료비 부담 정도</label>
+                        <label class="option-label">
+                            <input type="radio" name="medical_cost" value="severe" required>
+                            <span>의료비로 인해 생활이 매우 어려움</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="medical_cost" value="high" required>
+                            <span>의료비 부담이 큼</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="medical_cost" value="manageable" required>
+                            <span>감당 가능한 수준</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="form-label fw-bold">국민연금 수급 여부</label>
+                        <label class="option-label">
+                            <input type="radio" name="pension" value="none" required>
+                            <span>국민연금 미가입 또는 수급액 없음</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="pension" value="low" required>
+                            <span>월 50만원 미만 수급</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="pension" value="adequate" required>
+                            <span>월 50만원 이상 수급</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 건강 상태 -->
+            <div class="question-card">
+                <h3 class="question-header">🏥 건강 상태</h3>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">일상생활 수행 능력</label>
+                        <label class="option-label">
+                            <input type="radio" name="daily_living" value="dependent" required>
+                            <span>전적으로 다른 사람의 도움이 필요</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="daily_living" value="partial" required>
+                            <span>부분적인 도움이 필요</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="daily_living" value="independent" required>
+                            <span>혼자서 일상생활 가능</span>
+                        </label>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">만성질환 보유 현황</label>
+                        <label class="option-label">
+                            <input type="radio" name="chronic_disease" value="multiple" required>
+                            <span>3개 이상의 만성질환 보유</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="chronic_disease" value="some" required>
+                            <span>1-2개의 만성질환 보유</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="chronic_disease" value="none" required>
+                            <span>만성질환 없음</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="form-label fw-bold">정신건강 상태</label>
+                        <label class="option-label">
+                            <input type="radio" name="mental_health" value="poor" required>
+                            <span>우울감, 불안감이 심하여 일상생활에 지장</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="mental_health" value="fair" required>
+                            <span>가끔 우울하거나 불안함</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="mental_health" value="good" required>
+                            <span>정신적으로 건강함</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 사회적 관계 -->
+            <div class="question-card">
+                <h3 class="question-header">👥 사회적 관계 및 지지체계</h3>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">가족 관계</label>
+                        <label class="option-label">
+                            <input type="radio" name="family" value="isolated" required>
+                            <span>독거이며 가족과의 연락이 거의 없음</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="family" value="limited" required>
+                            <span>가족이 있지만 자주 만나지 못함</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="family" value="supportive" required>
+                            <span>가족과 정기적으로 만나며 지원받음</span>
+                        </label>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">사회 활동 참여</label>
+                        <label class="option-label">
+                            <input type="radio" name="social_activity" value="none" required>
+                            <span>사회 활동에 전혀 참여하지 않음</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="social_activity" value="limited" required>
+                            <span>가끔 경로당이나 복지관 이용</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="social_activity" value="active" required>
+                            <span>정기적으로 사회 활동 참여</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="form-label fw-bold">응급상황 시 도움 요청 가능한 사람</label>
+                        <label class="option-label">
+                            <input type="radio" name="emergency_support" value="none" required>
+                            <span>도움 요청할 사람이 없음</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="emergency_support" value="limited" required>
+                            <span>1-2명 정도 있음</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="emergency_support" value="adequate" required>
+                            <span>여러 명에게 도움 요청 가능</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 주거 환경 -->
+            <div class="question-card">
+                <h3 class="question-header">🏠 주거 환경</h3>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">주거 형태</label>
+                        <label class="option-label">
+                            <input type="radio" name="housing_type" value="temporary" required>
+                            <span>쪽방, 고시원, 임시거처</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="housing_type" value="rental" required>
+                            <span>월세 또는 전세</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="housing_type" value="owned" required>
+                            <span>자가 소유</span>
+                        </label>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">주거비 부담</label>
+                        <label class="option-label">
+                            <input type="radio" name="housing_cost" value="excessive" required>
+                            <span>소득의 50% 이상</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="housing_cost" value="high" required>
+                            <span>소득의 30-50%</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="housing_cost" value="manageable" required>
+                            <span>소득의 30% 미만</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="form-label fw-bold">주거 환경의 안전성</label>
+                        <label class="option-label">
+                            <input type="radio" name="housing_safety" value="unsafe" required>
+                            <span>노후화되어 위험하고 편의시설 부족</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="housing_safety" value="fair" required>
+                            <span>보통 수준</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="housing_safety" value="safe" required>
+                            <span>안전하고 편리함</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn custom-btn btn-lg px-5 py-3">
+                    <i class="bi-calculator me-2"></i>맞춤형 복지 서비스 진단하기
+                </button>
+                <button type="button" class="btn btn-success btn-lg px-5 py-3 ms-3" id="saveResultBtn" style="display: none;">
+                    <i class="bi-bookmark-plus me-2"></i>진단 결과 저장하기
+                </button>
+            </div>
+        </form>
+
+        <!-- 모달 프레임들 -->
+        <!-- 복지점수 계산 모달 -->
+        <div class="modal fade" id="calculatorModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="bi-calculator me-2"></i>복지점수 계산하기
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="calculatorContent">
+                            <!-- 폼 내용이 여기로 이동됩니다 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 저장된 복지점수 확인 모달 -->
+        <div class="modal fade" id="historyModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title">
+                            <i class="bi-bookmark-check me-2"></i>저장한 복지점수 확인하기
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="historyContent">
+                            <!-- 저장된 내용이 여기에 표시됩니다 -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" id="clearHistoryBtn">
+                            <i class="bi-trash me-2"></i>저장 내역 삭제
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 결과 표시 영역 -->
+        <div id="results" class="results-section" style="display: none;">
+            <div class="score-display">
+                <h2 class="mb-3">진단 결과</h2>
+                <div id="riskLevel" class="h4 mb-2"></div>
+                <p id="riskDescription" class="mb-0"></p>
+            </div>
+
+            <h3 class="text-primary mb-4">
+                <i class="bi-heart-fill me-2"></i>맞춤형 복지 서비스 추천
+            </h3>
+            <div id="recommendedWelfare"></div>
+
+            <div class="mt-4 p-4 bg-light rounded-3">
+                <h5 class="text-primary mb-3">
+                    <i class="bi-telephone-fill me-2"></i>상담 및 신청 안내
+                </h5>
+                <p class="mb-2"><strong>주민센터:</strong> 거주지 관할 주민센터에서 대부분의 복지 서비스 신청 가능</p>
+                <p class="mb-2"><strong>보건복지부 콜센터:</strong> 129 (무료상담)</p>
+                <p class="mb-0"><strong>국민연금공단:</strong> 1355 (기초연금, 장기요양보험 관련)</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 복지 프로그램 데이터베이스
+        const welfareDatabase = {
+            // 기초생활보장 관련
+            basic_living: {
+                name: "기초생활보장제도",
+                description: "생계급여, 의료급여, 주거급여, 교육급여를 통해 최저생활을 보장합니다.",
+                priority: "high",
+                application: "거주지 관할 주민센터",
+                conditions: ["소득인정액이 급여별 선정기준 이하", "부양의무자 기준 충족"]
+            },
+            
+            basic_pension: {
+                name: "기초연금",
+                description: "만 65세 이상 소득 하위 70% 어르신에게 월 최대 334,810원 지급 (2024년 기준)",
+                priority: "high",
+                application: "주민센터 또는 국민연금공단",
+                conditions: ["만 65세 이상", "소득인정액 기준 충족"]
+            },
+
+            housing_support: {
+                name: "주거급여",
+                description: "소득 하위 47% 계층에게 임차료 또는 수선유지비 지원",
+                priority: "high",
+                application: "거주지 관할 주민센터",
+                conditions: ["소득인정액이 기준 중위소득 47% 이하"]
+            },
+
+            medical_support: {
+                name: "의료급여",
+                description: "의료비 본인부담금 경감 또는 면제",
+                priority: "high",
+                application: "거주지 관할 주민센터",
+                conditions: ["기초생활수급자", "차상위계층"]
+            },
+
+            // 건강 관련
+            long_term_care: {
+                name: "노인장기요양보험",
+                description: "신체활동, 가사활동 지원 등 장기요양서비스 제공",
+                priority: "high",
+                application: "국민건강보험공단",
+                conditions: ["만 65세 이상 또는 65세 미만 노인성 질병자", "장기요양인정 신청 및 등급 판정"]
+            },
+
+            customized_care: {
+                name: "노인맞춤돌봄서비스",
+                description: "안전확인, 생활교육, 서비스연계, 생활지원 등 맞춤형 서비스",
+                priority: "high",
+                application: "시군구청 또는 수행기관",
+                conditions: ["만 65세 이상", "국가보훈대상자는 보훈청 승인"]
+            },
+
+            home_healthcare: {
+                name: "방문건강관리서비스",
+                description: "보건소 간호사가 가정방문하여 건강관리 서비스 제공",
+                priority: "medium",
+                application: "거주지 관할 보건소",
+                conditions: ["건강관리가 필요한 가정", "의료취약계층 우선"]
+            },
+
+            dementia_center: {
+                name: "치매안심센터 서비스",
+                description: "치매 검진, 상담, 치매환자 및 가족 지원 프로그램",
+                priority: "medium",
+                application: "거주지 관할 치매안심센터",
+                conditions: ["만 60세 이상", "치매 고위험군 또는 치매환자"]
+            },
+
+            // 사회참여 관련
+            senior_job: {
+                name: "노인일자리 및 사회활동 지원사업",
+                description: "공익활동, 사회서비스형, 시장형, 취업알선형 일자리 제공",
+                priority: "medium",
+                application: "시니어클럽, 노인복지관 등",
+                conditions: ["만 65세 이상", "사업 유형별 조건 상이"]
+            },
+
+            social_program: {
+                name: "노인복지관 프로그램",
+                description: "여가문화, 평생교육, 사회참여 프로그램 제공",
+                priority: "medium",
+                application: "거주지 인근 노인복지관",
+                conditions: ["만 60세 이상"]
+            },
+
+            // 응급 및 특수 지원
+            emergency_support: {
+                name: "긴급복지지원",
+                description: "위기상황 발생시 생계비, 의료비, 주거비 등 긴급 지원",
+                priority: "high",
+                application: "시군구청, 주민센터, 보건복지부 콜센터 129",
+                conditions: ["갑작스러운 위기상황 발생", "소득 및 재산 기준 충족"]
+            },
+
+            alone_elderly: {
+                name: "독거노인 응급안전알림서비스",
+                description: "응급상황 시 자동 신고되는 응급안전장치 설치",
+                priority: "high",
+                application: "거주지 관할 주민센터",
+                conditions: ["만 65세 이상 독거노인", "기초생활수급자 또는 차상위계층"]
+            },
+
+            // 교육 및 여가
+            lifelong_education: {
+                name: "평생교육 프로그램",
+                description: "취미, 건강, 교양 등 다양한 평생학습 프로그램",
+                priority: "low",
+                application: "평생학습관, 노인복지관",
+                conditions: ["프로그램별 연령 조건 상이", "거주지 제한 없음"]
+            },
+
+            volunteer_program: {
+                name: "자원봉사 프로그램",
+                description: "어르신 대상 맞춤형 자원봉사 활동 및 교육 프로그램",
+                priority: "low",
+                application: "자원봉사센터, 노인복지관",
+                conditions: ["자원봉사 의지가 있는 어르신", "건강상태 양호"]
+            }
+        };
+
+        // localStorage 관련 함수들
+        function saveToLocalStorage(data, riskLevel, recommendations) {
+            const saveData = {
+                timestamp: new Date().toISOString(),
+                formData: data,
+                riskLevel: riskLevel,
+                recommendations: recommendations,
+                id: Date.now() // 고유 ID
+            };
+            
+            // 기존 저장된 데이터 가져오기
+            let savedData = JSON.parse(localStorage.getItem('welfareHistory') || '[]');
+            
+            // 새 데이터 추가 (최대 10개만 저장)
+            savedData.unshift(saveData);
+            if (savedData.length > 10) {
+                savedData = savedData.slice(0, 10);
+            }
+            
+            localStorage.setItem('welfareHistory', JSON.stringify(savedData));
+            alert('진단 결과가 저장되었습니다!');
+        }
+        
+        function loadFromLocalStorage() {
+            return JSON.parse(localStorage.getItem('welfareHistory') || '[]');
+        }
+        
+        function clearLocalStorage() {
+            if (confirm('저장된 모든 복지점수 내역을 삭제하시겠습니까?')) {
+                localStorage.removeItem('welfareHistory');
+                displayHistory();
+                alert('저장 내역이 삭제되었습니다.');
+            }
+        }
+
+        // 모달 관련 함수들
+        function openCalculatorModal() {
+            const modal = new bootstrap.Modal(document.getElementById('calculatorModal'));
+            const calculatorContent = document.getElementById('calculatorContent');
+            const welfareForm = document.getElementById('welfareForm');
+            
+            // 폼을 모달로 이동
+            calculatorContent.appendChild(welfareForm);
+            welfareForm.style.display = 'block';
+            
+            modal.show();
+        }
+        
+        function openHistoryModal() {
+            const modal = new bootstrap.Modal(document.getElementById('historyModal'));
+            displayHistory();
+            modal.show();
+        }
+        
+        function displayHistory() {
+            const historyContent = document.getElementById('historyContent');
+            const savedData = loadFromLocalStorage();
+            
+            if (savedData.length === 0) {
+                historyContent.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="bi-bookmark-x display-1 text-muted"></i>
+                        <h4 class="text-muted mt-3">저장된 복지점수가 없습니다</h4>
+                        <p class="text-muted">먼저 복지점수를 계산하고 저장해보세요.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let historyHTML = '';
+            
+            savedData.forEach((item, index) => {
+                const date = new Date(item.timestamp);
+                const formattedDate = date.toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const riskMessages = {
+                    'critical': { level: '🚨 긴급 지원 필요', color: 'danger' },
+                    'high': { level: '⚠️ 높은 위험도', color: 'warning' },
+                    'medium': { level: '🔶 중간 위험도', color: 'info' },
+                    'low': { level: '✅ 안정적', color: 'success' }
+                };
+                
+                const riskInfo = riskMessages[item.riskLevel];
+                
+                historyHTML += `
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">
+                                    <i class="bi-calendar3 me-2"></i>${formattedDate}
+                                </h6>
+                                <span class="badge bg-${riskInfo.color}">${riskInfo.level}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary">📋 진단 정보</h6>
+                                    <p class="small mb-1"><strong>연령대:</strong> ${getFormDataLabel('age', item.formData.age)}</p>
+                                    <p class="small mb-1"><strong>거주지역:</strong> ${getFormDataLabel('region', item.formData.region)}</p>
+                                    <p class="small mb-1"><strong>소득수준:</strong> ${getFormDataLabel('income', item.formData.income)}</p>
+                                    <p class="small mb-0"><strong>건강상태:</strong> ${getFormDataLabel('daily_living', item.formData.daily_living)}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-success">🏥 추천 복지서비스 (${item.recommendations.length}개)</h6>
+                                    <ul class="small mb-0">
+                                        ${item.recommendations.slice(0, 3).map(rec => 
+                                            `<li>${rec.name}</li>`
+                                        ).join('')}
+                                        ${item.recommendations.length > 3 ? `<li class="text-muted">외 ${item.recommendations.length - 3}개 더...</li>` : ''}
+                                    </ul>
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary" onclick="showDetailHistory(${index})">
+                                <i class="bi-eye me-1"></i>상세 보기
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            historyContent.innerHTML = historyHTML;
+        }
+        
+        // 폼 데이터 라벨 변환 함수
+        function getFormDataLabel(fieldName, value) {
+            const labels = {
+                age: {
+                    '65-69': '65-69세',
+                    '70-74': '70-74세', 
+                    '75-79': '75-79세',
+                    '80+': '80세 이상'
+                },
+                region: {
+                    'seoul': '서울특별시',
+                    'busan': '부산광역시',
+                    'daegu': '대구광역시',
+                    'other': '기타 지역'
+                },
+                income: {
+                    'basic': '월 30만원 미만 (기초생활수급)',
+                    'low': '월 30-80만원 (차상위계층)',
+                    'medium-low': '월 80-120만원',
+                    'medium': '월 120-200만원',
+                    'stable': '월 200만원 이상'
+                },
+                daily_living: {
+                    'dependent': '전적으로 도움 필요',
+                    'partial': '부분적 도움 필요',
+                    'independent': '혼자서 생활 가능'
+                }
+            };
+            
+            return labels[fieldName]?.[value] || value;
+        }
+        
+        // 상세 내역 표시 함수
+        function showDetailHistory(index) {
+            const savedData = loadFromLocalStorage();
+            const item = savedData[index];
+            
+            if (!item) return;
+            
+            // 새 모달 창으로 상세 정보 표시
+            const detailModal = document.createElement('div');
+            detailModal.className = 'modal fade';
+            detailModal.innerHTML = `
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title">
+                                <i class="bi-file-text me-2"></i>상세 진단 결과
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            ${generateDetailHTML(item)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(detailModal);
+            const modal = new bootstrap.Modal(detailModal);
+            modal.show();
+            
+            // 모달이 닫힐 때 DOM에서 제거
+            detailModal.addEventListener('hidden.bs.modal', () => {
+                document.body.removeChild(detailModal);
+            });
+        }
+        
+        function generateDetailHTML(item) {
+            const date = new Date(item.timestamp);
+            const formattedDate = date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const riskMessages = {
+                'critical': { level: '🚨 긴급 지원 필요', description: '복합적인 어려움을 겪고 계십니다. 즉시 전문 상담을 받으시기 바랍니다.' },
+                'high': { level: '⚠️ 높은 위험도', description: '여러 영역에서 지원이 필요합니다. 적극적인 복지 서비스 이용을 권합니다.' },
+                'medium': { level: '🔶 중간 위험도', description: '일부 영역에서 지원이 도움이 될 것 같습니다.' },
+                'low': { level: '✅ 안정적', description: '비교적 안정적인 상태입니다. 예방적 서비스 이용을 권합니다.' }
+            };
+            
+            const riskInfo = riskMessages[item.riskLevel];
+            
+            let html = `
+                <div class="mb-4">
+                    <h6 class="text-muted">진단 일시: ${formattedDate}</h6>
+                </div>
+                
+                <div class="score-display mb-4">
+                    <h4>${riskInfo.level}</h4>
+                    <p class="mb-0">${riskInfo.description}</p>
+                </div>
+                
+                <h5 class="text-primary mb-3">
+                    <i class="bi-heart-fill me-2"></i>맞춤형 복지 서비스 추천 (${item.recommendations.length}개)
+                </h5>
+            `;
+            
+            item.recommendations.forEach(program => {
+                const priorityClass = `priority-${program.priority}`;
+                const priorityText = {
+                    'high': '🔴 우선 신청',
+                    'medium': '🟡 권장 서비스', 
+                    'low': '🟢 참고 서비스'
+                };
+                
+                html += `
+                    <div class="welfare-item ${priorityClass} mb-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="text-primary mb-1">${program.name}</h6>
+                            <span class="badge bg-secondary">${priorityText[program.priority]}</span>
+                        </div>
+                        <p class="text-dark mb-2">${program.description}</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small class="text-muted">
+                                    <i class="bi-building me-1"></i><strong>신청처:</strong> ${program.application}
+                                </small>
+                            </div>
+                            <div class="col-md-6">
+                                <small class="text-muted">
+                                    <i class="bi-check-circle me-1"></i><strong>조건:</strong> ${program.conditions.join(', ')}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            return html;
+        }
+
+        // 이벤트 리스너들
+        document.addEventListener('DOMContentLoaded', function() {
+            // 메인 버튼 이벤트
+            document.getElementById('openCalculatorBtn').addEventListener('click', openCalculatorModal);
+            document.getElementById('openHistoryBtn').addEventListener('click', openHistoryModal);
+            
+            // 저장 버튼 이벤트
+            document.getElementById('saveResultBtn').addEventListener('click', function() {
+                if (window.lastCalculationResult) {
+                    saveToLocalStorage(
+                        window.lastCalculationResult.formData,
+                        window.lastCalculationResult.riskLevel,
+                        window.lastCalculationResult.recommendations
+                    );
+                }
+            });
+            
+            // 내역 삭제 버튼 이벤트
+            document.getElementById('clearHistoryBtn').addEventListener('click', clearLocalStorage);
+        });
+        function getRecommendedWelfare(formData) {
+            const recommendations = [];
+            
+            // 소득 기반 추천
+            if (formData.income === 'basic') {
+                recommendations.push(welfareDatabase.basic_living);
+                recommendations.push(welfareDatabase.medical_support);
+                recommendations.push(welfareDatabase.housing_support);
+                recommendations.push(welfareDatabase.emergency_support);
+            }
+            
+            if (formData.income === 'basic' || formData.income === 'low') {
+                recommendations.push(welfareDatabase.basic_pension);
+                recommendations.push(welfareDatabase.customized_care);
+            }
+
+            // 건강 상태 기반 추천
+            if (formData.daily_living === 'dependent' || formData.daily_living === 'partial') {
+                recommendations.push(welfareDatabase.long_term_care);
+                recommendations.push(welfareDatabase.customized_care);
+            }
+
+            if (formData.chronic_disease === 'multiple' || formData.chronic_disease === 'some') {
+                recommendations.push(welfareDatabase.home_healthcare);
+                if (formData.medical_cost === 'severe' || formData.medical_cost === 'high') {
+                    recommendations.push(welfareDatabase.medical_support);
+                }
+            }
+
+            if (formData.mental_health === 'poor') {
+                recommendations.push(welfareDatabase.dementia_center);
+                recommendations.push(welfareDatabase.customized_care);
+            }
+
+            // 사회적 관계 기반 추천
+            if (formData.family === 'isolated') {
+                recommendations.push(welfareDatabase.alone_elderly);
+                recommendations.push(welfareDatabase.customized_care);
+                recommendations.push(welfareDatabase.emergency_support);
+            }
+
+            if (formData.social_activity === 'none' || formData.social_activity === 'limited') {
+                recommendations.push(welfareDatabase.social_program);
+                if (formData.daily_living === 'independent') {
+                    recommendations.push(welfareDatabase.senior_job);
+                }
+            }
+
+            if (formData.emergency_support === 'none') {
+                recommendations.push(welfareDatabase.alone_elderly);
+                recommendations.push(welfareDatabase.emergency_support);
+            }
+
+            // 주거 환경 기반 추천
+            if (formData.housing_type === 'temporary') {
+                recommendations.push(welfareDatabase.housing_support);
+                recommendations.push(welfareDatabase.basic_living);
+            }
+
+            if (formData.housing_cost === 'excessive') {
+                recommendations.push(welfareDatabase.housing_support);
+            }
+
+            if (formData.housing_safety === 'unsafe') {
+                recommendations.push(welfareDatabase.housing_support);
+                recommendations.push(welfareDatabase.emergency_support);
+            }
+
+            // 연령 기반 추천 (모든 65세 이상)
+            if (formData.age !== '65-69' || formData.age === '65-69') {
+                if (!recommendations.some(r => r.name === '기초연금')) {
+                    recommendations.push(welfareDatabase.basic_pension);
+                }
+            }
+
+            // 건강한 어르신을 위한 추가 프로그램
+            if (formData.daily_living === 'independent' && 
+                formData.chronic_disease === 'none' && 
+                formData.mental_health === 'good') {
+                recommendations.push(welfareDatabase.lifelong_education);
+                recommendations.push(welfareDatabase.volunteer_program);
+            }
+
+            // 중복 제거
+            const uniqueRecommendations = recommendations.filter((item, index, self) => 
+                index === self.findIndex(t => t.name === item.name)
+            );
+
+            // 우선순위별 정렬
+            const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+            return uniqueRecommendations.sort((a, b) => 
+                priorityOrder[b.priority] - priorityOrder[a.priority]
+            );
+        }
+
+        // 위험도 계산 함수
+        function calculateRiskLevel(formData) {
+            let riskScore = 0;
+            
+            // 소득 위험도
+            if (formData.income === 'basic') riskScore += 4;
+            else if (formData.income === 'low') riskScore += 3;
+            else if (formData.income === 'medium-low') riskScore += 2;
+            
+            // 건강 위험도
+            if (formData.daily_living === 'dependent') riskScore += 4;
+            else if (formData.daily_living === 'partial') riskScore += 2;
+            
+            if (formData.chronic_disease === 'multiple') riskScore += 3;
+            else if (formData.chronic_disease === 'some') riskScore += 1;
+            
+            if (formData.mental_health === 'poor') riskScore += 3;
+            else if (formData.mental_health === 'fair') riskScore += 1;
+            
+            // 사회적 위험도
+            if (formData.family === 'isolated') riskScore += 3;
+            else if (formData.family === 'limited') riskScore += 1;
+            
+            if (formData.social_activity === 'none') riskScore += 2;
+            
+            if (formData.emergency_support === 'none') riskScore += 3;
+            else if (formData.emergency_support === 'limited') riskScore += 1;
+            
+            // 주거 위험도
+            if (formData.housing_type === 'temporary') riskScore += 3;
+            if (formData.housing_cost === 'excessive') riskScore += 2;
+            if (formData.housing_safety === 'unsafe') riskScore += 2;
+            
+            if (riskScore >= 15) return 'critical';
+            else if (riskScore >= 10) return 'high';
+            else if (riskScore >= 5) return 'medium';
+            else return 'low';
+        }
+
+        // 폼 제출 처리
+        document.getElementById('welfareForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            // 폼 데이터 수집
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // 필수 필드 검증
+            const requiredFields = ['age', 'region', 'income', 'medical_cost', 'pension', 
+                                  'daily_living', 'chronic_disease', 'mental_health',
+                                  'family', 'social_activity', 'emergency_support',
+                                  'housing_type', 'housing_cost', 'housing_safety'];
+            
+            const missingFields = requiredFields.filter(field => !data[field]);
+            
+            if (missingFields.length > 0) {
+                alert('모든 질문에 답변해주세요.');
+                return;
+            }
+            
+            // 위험도 계산
+            const riskLevel = calculateRiskLevel(data);
+            const recommendations = getRecommendedWelfare(data);
+            
+            // 전역 변수에 결과 저장 (저장 기능을 위해)
+            window.lastCalculationResult = {
+                formData: data,
+                riskLevel: riskLevel,
+                recommendations: recommendations
+            };
+            
+            // 결과 표시
+            displayResults(riskLevel, recommendations);
+            
+            // 저장 버튼 표시
+            document.getElementById('saveResultBtn').style.display = 'inline-block';
+            
+            // 결과 영역으로 스크롤
+            document.getElementById('results').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        });
+
+        function displayResults(riskLevel, recommendations) {
+            const resultsDiv = document.getElementById('results');
+            const riskLevelDiv = document.getElementById('riskLevel');
+            const riskDescriptionDiv = document.getElementById('riskDescription');
+            const recommendedWelfareDiv = document.getElementById('recommendedWelfare');
+            
+            // 위험도별 메시지 설정
+            const riskMessages = {
+                'critical': {
+                    level: '🚨 긴급 지원 필요',
+                    description: '복합적인 어려움을 겪고 계십니다. 즉시 전문 상담을 받으시기 바랍니다.',
+                    color: 'danger'
+                },
+                'high': {
+                    level: '⚠️ 높은 위험도',
+                    description: '여러 영역에서 지원이 필요합니다. 적극적인 복지 서비스 이용을 권합니다.',
+                    color: 'warning'
+                },
+                'medium': {
+                    level: '🔶 중간 위험도',
+                    description: '일부 영역에서 지원이 도움이 될 것 같습니다.',
+                    color: 'info'
+                },
+                'low': {
+                    level: '✅ 안정적',
+                    description: '비교적 안정적인 상태입니다. 예방적 서비스 이용을 권합니다.',
+                    color: 'success'
+                }
+            };
+            
+            const riskInfo = riskMessages[riskLevel];
+            riskLevelDiv.textContent = riskInfo.level;
+            riskDescriptionDiv.textContent = riskInfo.description;
+            
+            // 추천 복지 서비스 표시
+            recommendedWelfareDiv.innerHTML = '';
+            
+            if (recommendations.length === 0) {
+                recommendedWelfareDiv.innerHTML = `
+                    <div class="welfare-item">
+                        <h5>추천 서비스가 없습니다</h5>
+                        <p>현재 상황에서는 특별한 복지 서비스가 필요하지 않은 것으로 보입니다. 
+                        필요시 가까운 주민센터에 문의해주세요.</p>
+                    </div>
+                `;
+            } else {
+                recommendations.forEach((program, index) => {
+                    const priorityClass = `priority-${program.priority}`;
+                    const priorityText = {
+                        'high': '🔴 우선 신청',
+                        'medium': '🟡 권장 서비스',
+                        'low': '🟢 참고 서비스'
+                    };
+                    
+                    const programDiv = document.createElement('div');
+                    programDiv.className = `welfare-item ${priorityClass}`;
+                    programDiv.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="text-primary mb-1">${program.name}</h5>
+                            <span class="badge bg-secondary">${priorityText[program.priority]}</span>
+                        </div>
+                        <p class="text-dark mb-2">${program.description}</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small class="text-muted">
+                                    <i class="bi-building me-1"></i><strong>신청처:</strong> ${program.application}
+                                </small>
+                            </div>
+                            <div class="col-md-6">
+                                <small class="text-muted">
+                                    <i class="bi-check-circle me-1"></i><strong>조건:</strong> ${program.conditions.join(', ')}
+                                </small>
+                            </div>
+                        </div>
+                    `;
+                    recommendedWelfareDiv.appendChild(programDiv);
+                });
+            }
+            
+            resultsDiv.style.display = 'block';
+        }
+    </script>
 </body>
 </html>
