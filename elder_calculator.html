@@ -11,131 +11,127 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap-icons.css" rel="stylesheet">
         <link href="css/templatemo-kind-heart-charity.css" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        
-        .site-header {
-            background-color: #13547a;
-            color: white;
-            padding: 10px 0;
-            font-size: 14px;
-        }
-        
-        .navbar-brand img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
-        
-        .custom-btn {
-            background-color: #80d0c7;
-            border-color: #80d0c7;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 25px;
-        }
-        
-        .custom-btn:hover {
-            background-color: #13547a;
-            border-color: #13547a;
-        }
-        
-        .question-card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
-        
-        .question-header {
-            background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
-            color: white;
-            padding: 20px;
-            margin: 0;
-        }
-        
-        .option-label {
-            display: block;
-            cursor: pointer;
-            padding: 15px 20px;
-            margin: 5px 0;
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .option-label:hover {
-            background: #e3f2fd;
-            border-color: #80d0c7;
-        }
-        
-        .option-label input:checked + span {
-            color: #13547a;
-            font-weight: 600;
-        }
-        
-        .option-label:has(input:checked) {
-            background: #e8f5e8;
-            border-color: #80d0c7;
-        }
-        
-        .results-section {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-            padding: 30px;
-            margin-top: 30px;
-        }
-        
-        .welfare-item {
-            background: #f8f9fa;
-            border-left: 4px solid #80d0c7;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 0 10px 10px 0;
-        }
-        
-        .priority-high { border-left-color: #dc3545; }
-        .priority-medium { border-left-color: #ffc107; }
-        .priority-low { border-left-color: #28a745; }
-        
-        .score-display {
-            background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-    </style>
-</head>
-    
+
+            <style>
+            body {
+                font-family: 'Inter', sans-serif;
+                background-color: #f8f9fa;
+                color: #333;
+            }
+            
+            .site-header {
+                background-color: #13547a;
+                color: white;
+                padding: 10px 0;
+                font-size: 14px;
+            }
+            
+            .navbar-brand img {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+            }
+            
+            .custom-btn {
+                background-color: #80d0c7;
+                border-color: #80d0c7;
+                color: white;
+                padding: 8px 20px;
+                border-radius: 25px;
+            }
+            
+            .custom-btn:hover {
+                background-color: #13547a;
+                border-color: #13547a;
+            }
+            
+            .question-card {
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                margin-bottom: 25px;
+                overflow: hidden;
+            }
+            
+            .question-header {
+                background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+                color: white;
+                padding: 20px;
+                margin: 0;
+            }
+            
+            .option-label {
+                display: block;
+                cursor: pointer;
+                padding: 15px 20px;
+                margin: 5px 0;
+                background: #f8f9fa;
+                border: 2px solid #e9ecef;
+                border-radius: 10px;
+                transition: all 0.3s ease;
+            }
+            
+            .option-label:hover {
+                background: #e3f2fd;
+                border-color: #80d0c7;
+            }
+            
+            .option-label input:checked + span {
+                color: #13547a;
+                font-weight: 600;
+            }
+            
+            .option-label:has(input:checked) {
+                background: #e8f5e8;
+                border-color: #80d0c7;
+            }
+            
+            .results-section {
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+                padding: 30px;
+                margin-top: 30px;
+            }
+            
+            .welfare-item {
+                background: #f8f9fa;
+                border-left: 4px solid #80d0c7;
+                padding: 20px;
+                margin-bottom: 15px;
+                border-radius: 0 10px 10px 0;
+            }
+            
+            .priority-high { border-left-color: #dc3545; }
+            .priority-medium { border-left-color: #ffc107; }
+            .priority-low { border-left-color: #28a745; }
+            
+            .score-display {
+                background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+                color: white;
+                padding: 20px;
+                border-radius: 15px;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+        </style>
+    </head>
 <body id="section_1">
         <header class="site-header">
             <div class="container">
-                <div class="row">                    
+                <div class="row">
                     <div class="col-lg-8 col-12 d-flex flex-wrap">
                         <p class="d-flex me-4 mb-0">
                             <i class="bi-geo-alt me-2"></i>
                             <strong>효성여자고등학교</strong>
                         </p>
-
                         <p class="d-flex mb-0">
                             <i class="bi-envelope me-2"></i>
-                            <a href="mailto:info@company.com">
+                            <a href="mailto:team.ddasum.care@gmail.com">
                                 team.ddasum.care@gmail.com
                             </a>
                         </p>
                     </div>
-
                     <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
                         <ul class="social-icon">
                             <li class="social-icon-item">
@@ -144,74 +140,12 @@
                             <li class="social-icon-item">
                                 <a href="#" class="social-icon-link bi-facebook"></a>
                             </li>
-                            
                             <li class="social-icon-item">
                                 <a href="#" class="social-icon-link bi-instagram"></a>
                             </li>
-                            
                             <li class="social-icon-item">
                                 <a href="#" class="social-icon-link bi-youtube"></a>
                             </li>
-
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link bi-whatsapp"></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-   <!doctype html>
-<html lang="ko">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-
-        <title>Hello Silver - 효성여고 학생이 만드는 나눔</title>
-      
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/bootstrap-icons.css" rel="stylesheet">
-        <link href="css/templatemo-kind-heart-charity.css" rel="stylesheet">
-    
-    </head>
-    <body id="section_1">
-        <header class="site-header">
-            <div class="container">
-                <div class="row">                    
-                    <div class="col-lg-8 col-12 d-flex flex-wrap">
-                        <p class="d-flex me-4 mb-0">
-                            <i class="bi-geo-alt me-2"></i>
-                            <strong>효성여자고등학교</strong>
-                        </p>
-
-                        <p class="d-flex mb-0">
-                            <i class="bi-envelope me-2"></i>
-                            <a href="mailto:info@company.com">
-                                team.ddasum.care@gmail.com
-                            </a>
-                        </p>
-                    </div>
-
-                    <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
-                        <ul class="social-icon">
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link bi-twitter"></a>
-                            </li>
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link bi-facebook"></a>
-                            </li>
-                            
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link bi-instagram"></a>
-                            </li>
-                            
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link bi-youtube"></a>
-                            </li>
-
                             <li class="social-icon-item">
                                 <a href="#" class="social-icon-link bi-whatsapp"></a>
                             </li>
@@ -240,37 +174,28 @@
                         <li class="nav-item">
                             <a class="nav-link click-scroll" href="#top">Home</a>
                         </li>
-
-                        <li>
-                            <a href="purpose.html">설립목적</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="purpose.html">설립목적</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link click-scroll" href="#section_3">Causes</a>
                         </li>
-
-                        <li>
-                            <a href="elder_calculator">노인복지점수계산기</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="elder_calculator.html">노인복지점수계산기</a>
                         </li>
-
                         <li class="nav-item dropdown">
-                            <a class="nav-link click-scroll dropdown-toggle" href="#section_5" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">News</a>
-
+                            <a class="nav-link click-scroll dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">News</a>
                             <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
                                 <li><a class="dropdown-item" href="news.html">건강 정보</a></li>
-
                                 <li><a class="dropdown-item" href="news-detail.html">지역별 서비스 안내</a></li>
                             </ul>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link click-scroll" href="#section_6">연락망</a>
                         </li>
-                        
-                         <li class="nav-item">
-                             <a class="nav-link" href="minigame.html">미니게임</a>
-                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="minigame.html">미니게임</a>
+                        </li>
                         <li class="nav-item ms-3">
                             <a class="nav-link custom-btn custom-border-btn btn" href="donate.html">기부</a>
                         </li>
